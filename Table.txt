@@ -1,16 +1,26 @@
+drop table ERS_REIMBURSEMENT;
+
 create table ERS_REIMBURSEMENT(
 reimb_id serial primary key, 
 reimb_amount numeric not null, 
 reimb_submitted timestamp not null, 
 reimb_resolved timestamp not null,
 reimb_description varchar(250) not null, 
-reimb_receipt, 
+reimb_receipt varchar(255) not null, 
 reimb_author numeric not null, 
 reimb_resolver numeric not null,
 reimb_status_id numeric not null, 
-reimb_type_id numeric not null);
+reimb_type_id numeric not null
+);
 
 
+create table ERS_USERS{
+ers_users_id number,
+ers_username varchar(50),
+ers_password varchar(50),
+user_first_name varchar(100),
+user_last_name varchar(100),
+user_email varchar(150),
+user_role_id number
+};
 
-
-)
