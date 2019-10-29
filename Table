@@ -1,0 +1,16 @@
+create table ERS_REIMBURSEMENT(
+reimb_id serial primary key, 
+reimb_amount numeric not null, 
+reimb_submitted timestamp not null, 
+reimb_resolved timestamp not null,
+reimb_description varchar(250) not null, 
+reimb_receipt, 
+reimb_author numeric not null, 
+reimb_resolver numeric not null,
+reimb_status_id numeric not null, 
+reimb_type_id numeric not null);
+
+
+
+
+)
