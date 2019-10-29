@@ -1,0 +1,50 @@
+drop table ers_reimbursement;
+drop table ers_users;
+drop table ers_reimbursement_status;
+drop table ers_reimbursement_type;
+drop table ers_user_roles;
+
+
+create table ers_reimbursement_status(
+reimb_status_id numeric primary key, 
+reimb_status varchar(10));
+
+create table ers_reimbursement_type(
+reimb_type_id numeric primary key,
+reimb_type varchar(10)
+);
+
+
+create table ers_reimbursement(
+reimb_id serial primary key, 
+reimb_amount numeric not null, 
+reimb_submitted timestamp not null, 
+reimb_resolved timestamp not null,
+reimb_description varchar(250) not null, 
+reimb_receipt varchar(255) not null, 
+reimb_author numeric not null, 
+reimb_resolver numeric not null,
+reimb_status_id numeric REFERENCES ers_reimbursement_status(reimb_status_id) not NULL,
+reimb_type_id numeric REFERENCES ers_reimbursement_type(reimb_type_id) not NULL
+);
+
+
+create table ers_user_roles(
+ers_user_role_id numeric primary key,
+user_role varchar(10)
+);
+
+
+
+create table ers_users(
+ers_users_id numeric,
+ers_username varchar(50) unique,
+ers_password varchar(50),
+user_first_name varchar(100),
+user_last_name varchar(100),
+user_email varchar(150) unique,
+user_role_id numeric REFERENCES ers_user_roles(ers_user_role_id) not NULL
+);
+
+
+
