@@ -4,24 +4,19 @@ drop table ers_user_roles;
 drop table ers_users;
 drop table ers_reimbursement;
 
-
-
 create table ers_reimbursement_status(
 reimb_status_id numeric primary key, 
 reimb_status varchar(10));
 
+
 create table ers_reimbursement_type(
 reimb_type_id numeric primary key,
-reimb_type varchar(10)
-);
-
+reimb_type varchar(10));
 
 
 create table ers_user_roles(
 ers_user_role_id numeric primary key,
-user_role varchar(10)
-);
-
+user_role varchar(25));
 
 
 create table ers_users(
@@ -31,8 +26,7 @@ ers_password varchar(50),
 user_first_name varchar(100),
 user_last_name varchar(100),
 user_email varchar(150) unique,
-user_role_id numeric REFERENCES ers_user_roles(ers_user_role_id) not NULL
-);
+user_role_id numeric REFERENCES ers_user_roles(ers_user_role_id) not NULL);
 
 
 create table ers_reimbursement(
@@ -41,9 +35,27 @@ reimb_amount numeric not null,
 reimb_submitted timestamp not null, 
 reimb_resolved timestamp not null,
 reimb_description varchar(250) not null, 
-reimb_receipt varchar(255) not null, 
+reimb_receipt bytea not null, 
 reimb_author numeric REFERENCES ers_users(ers_users_id) not NULL,
 reimb_resolver numeric REFERENCES ers_users(ers_users_id) not NULL,
 reimb_status_id numeric REFERENCES ers_reimbursement_status(reimb_status_id) not NULL,
-reimb_type_id numeric REFERENCES ers_reimbursement_type(reimb_type_id) not NULL
-);
+reimb_type_id numeric REFERENCES ers_reimbursement_type(reimb_type_id) not NULL);
+
+
+
+insert into ers_reimbursement_status (reimb_status_id, reimb_status) values 
+('1','Pending'),
+('2', 'Denied'),
+('3', 'Approved');
+
+
+insert into ers_reimbursement_type (reimb_type_id, reimb_type) values 
+('1','Food'),
+('2', 'Lodging'),
+('3', 'Travel'),
+('4', 'Other');
+
+
+insert into ers_user_roles (ers_user_role_id, user_role) values 
+('1','Employee'),
+('2', 'Finance Manager');
