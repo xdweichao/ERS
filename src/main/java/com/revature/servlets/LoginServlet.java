@@ -25,11 +25,10 @@ public class LoginServlet extends HttpServlet {
 		}
 	}
 
-	public void service(HttpServletRequest req, HttpServletResponse resp) 
-			throws ServletException, IOException {
+	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		//CORS Headers, mentioned in class but unsure 
-		//when this will be used yet in our project
+		// CORS Headers, mentioned in class but unsure, when this will be used yet in
+		// our project
 		resp.setHeader("Access-Control-Allow-Origin", "*");
 		resp.setHeader("Access-Control-Allow-Headers", "content-type");
 		super.service(req, resp);
@@ -39,14 +38,17 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 
-		//read JSON object
+		//read submitted JSON object and check if exist, it will return user information [ excluding password ] 
 		ObjectMapper om = new ObjectMapper();
-		Users test1 = om.readValue(req.getReader(), Users.class);
-		om.writeValue(resp.getWriter(), test1);
-		String usern = test1.getUsername();
-		System.out.println(usern);
-		boolean userExist = UserDao.checkIfUserExist(usern);
-		System.out.println(userExist);
+		Users userSubmittedInformation = om.readValue(req.getReader(), Users.class);
+		om.writeValue(resp.getWriter(), userSubmittedInformation);
+		String username = userSubmittedInformation.getUsername();
+		System.out.println("Inputted: " + username);
 		
+		//check if user exist
+		boolean userExist = UserDao.checkIfUserExist(username);
+		if (UserDao.checkIfUserExist(username)) {
+			//code to extract info
+		}
 	}
 }
