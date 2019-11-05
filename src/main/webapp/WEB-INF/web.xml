@@ -7,16 +7,15 @@
 
 
 	<servlet>
-		<servlet-name>FormServlet</servlet-name>
-		<servlet-class>com.revature.servlets.FormServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>com.revature.servlets.LoginServlet</servlet-class>
 	</servlet>
 
 
-	<servlet-mapping> 
-		<servlet-name>FormServlet</servlet-name>
-		<url-pattern>/form</url-pattern>
-	</servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>LoginServlet</servlet-name>
+  	<url-pattern>/login</url-pattern>
+  </servlet-mapping>
 
 
 </web-app>
