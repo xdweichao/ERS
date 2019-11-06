@@ -9,33 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.models.Users;
+import com.revature.servlets.LoginServlet;
 import com.revature.util.ConnectionUtil;
 
 public class UserDao {
-	
-	protected static List<Users> getAllUsers() {
-		try (Connection connection = ConnectionUtil.getConnection()) {
-			Statement statement = connection.createStatement();
-			String query = "SELECT * FROM ers_users";
-			ResultSet resultSet = statement.executeQuery(query);
 
-			List<Users> UserList = new ArrayList<>();
-
-			while (resultSet.next()) {
-				Users User = extractUserInfo(resultSet);
-				UserList.add(User);
-			}
-			return UserList;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	
-	
-	
-	public static boolean checkIfUserExist(String username) {
+	public static Users logIfExist(String username) {
 		System.out.println(username + " checking if exisiting...");
 
 		try (Connection connection = ConnectionUtil.getConnection()) {
@@ -46,27 +25,32 @@ public class UserDao {
 			// Check if user exist
 			ResultSet resultSet = statement.executeQuery();
 			if (resultSet.next()) {
-				Users user = extractUserInfo(resultSet);
-				System.out.println("yes " + user.getUsername() + " exist");
+				Users userInfo = extractUserInfo(resultSet);
+				System.out.println(userInfo.getUsername() + " exist");
 
-				return true;
+				String passwordFromDao = userInfo.getPassword();
+				System.out.println("password from dao: " + passwordFromDao);
+
+				return userInfo;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("unable to fetch data from database");
+			System.out.println("unable to fetch data from database when checking if user eixst");
 		}
-		return false;
+		return null;
 	}
 
-	protected static Users extractUserInfo(ResultSet resultSet) throws SQLException {
+	public static Users extractUserInfo(ResultSet resultSet) throws SQLException {
 		int id = resultSet.getInt("ers_users_id");
 		String username = resultSet.getString("ers_username");
-		String password = resultSet.getString("ers_password");
+		String password = LoginServlet.passwordHashNSalt(resultSet.getString("ers_password")).toString();
 		String firstname = resultSet.getString("user_first_name");
 		String lastname = resultSet.getString("user_last_name");
 		String email = resultSet.getString("user_email");
 		int role_id = resultSet.getInt("user_role_id");
-
+		System.out.println(LoginServlet.passwordHashNSalt("password"));
+		System.out.println(resultSet.getString("ers_password"));
+System.out.println(password);
 		Users user = new Users(id, username, password, firstname, lastname, email, role_id);
 		return user;
 	}
