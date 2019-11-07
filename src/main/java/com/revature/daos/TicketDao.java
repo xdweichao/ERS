@@ -65,25 +65,72 @@ public class TicketDao {
 		}
 	}
 
+	public static Tickets getTicketById(int id) {
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "select * from ers_reimbursement natural join ers_reimbursement_status natural join ers_reimbursement_type where reimb_id = ?";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, id);
+			ResultSet resultSet =statement.executeQuery();
+			if(resultSet.next()) {
+				
+				return extractTicket(resultSet);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Tickets createTicket(Double amount, String description, int author, int reimbType) {
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "insert into ers_reimbursement(reimb_amount, reimb_submitted, reimb_description, reimb_author, reimb_status_id, reimb_type_id) \r\n" + 
+					"values(?,current_date, ?  , ?, '1', ? ) \r\n" + 
+					"RETURNING reimb_id ";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setDouble(1, amount);
+			statement.setString(2, description);
+			statement.setInt(3, author);
+			statement.setInt(4, reimbType);
+			
+			ResultSet resultSet =statement.executeQuery();
+			
+			
+			
+			if(resultSet.next()) {
+				System.out.println("Created TicketID#: "+resultSet.getInt("reimb_id"));
+				return getTicketById(resultSet.getInt("reimb_id"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-
-	public static boolean updateTicket(int ticketId, int status, int resolver) {
+	public static Tickets updateTicket(int ticketId, int status, int resolver) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "\r\n" + 
 					"update ers_reimbursement set reimb_status_id = ?, reimb_resolver = ?, "
-					+ "reimb_resolved = current_date where reimb_id = ?";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, status);
-			ps.setInt(2, resolver);
-			ps.setInt(3, ticketId);
-			ps.execute();
+					+ "reimb_resolved = current_date where reimb_id = ? returning *";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, status);
+			statement.setInt(2, resolver);
+			statement.setInt(3, ticketId);
+			ResultSet resultSet =statement.executeQuery();
+			
+			
+			if(resultSet.next()) {
+				System.out.println("Updating TicketID: " + resultSet.getInt("reimb_id"));
+				return getTicketById(resultSet.getInt("reimb_id"));
+			}
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
+			return null;
 		}
-		return true;
+		return null;
 		
 	}
 }

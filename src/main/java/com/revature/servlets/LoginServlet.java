@@ -61,7 +61,6 @@ public class LoginServlet extends HttpServlet {
 		}
 	}
 
-	
 	// 50% Done Salting logic if we have time
 	public final static byte[] saltCode() {
 		SecureRandom random = new SecureRandom();

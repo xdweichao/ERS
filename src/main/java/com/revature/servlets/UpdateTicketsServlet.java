@@ -15,8 +15,10 @@ import com.revature.models.Users;
 import com.revature.service.TicketService;
 
 
-public class DenyTicketsServlet extends HttpServlet {
+public class UpdateTicketsServlet extends HttpServlet {
 
+	TicketService tic = new TicketService();
+	
 	private static final long serialVersionUID = 1L;
 	@Override
 	public void init() throws ServletException {
@@ -30,21 +32,25 @@ public class DenyTicketsServlet extends HttpServlet {
 	}
 
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Deny Ticket test");
+		System.out.println("Update Ticket test");
 
 		ObjectMapper om = new ObjectMapper();
-		Users user = om.readValue(request.getReader(), Users.class);
+		Tickets updateTicketInfo = om.readValue(request.getReader(), Tickets.class);
+
+		updateTicketInfo = tic.updateTicket(updateTicketInfo);
 		
-		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
-		tickets = TicketService.getTicketFromUseridSevice(user);
-		//TicketDao.updateTicket();
+		//ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+		//System.out.println(updateTicketInfo.getAuthorid());
+		
+		
 		
 		response.setStatus(201); 
-		om.writeValue(response.getWriter(), tickets);
+		om.writeValue(response.getWriter(), updateTicketInfo);
 
-		System.out.println("Ticket Set to Deny");
+
+		System.out.println("Update Complete");
 	}
 
 }

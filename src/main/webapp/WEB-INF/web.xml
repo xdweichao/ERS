@@ -16,6 +16,27 @@
 		<servlet-class>com.revature.servlets.GetTicketsServlet</servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name>CreateTicketsServlet</servlet-name>
+		<servlet-class>com.revature.servlets.CreateTicketsServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>UpdateTicketsServlet</servlet-name>
+		<servlet-class>com.revature.servlets.UpdateTicketsServlet</servlet-class>
+	</servlet>
+
+
+
+  <servlet-mapping>
+  	<servlet-name>UpdateTicketsServlet</servlet-name>
+  	<url-pattern>/ticket/update</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>CreateTicketsServlet</servlet-name>
+  	<url-pattern>/ticket/create</url-pattern>
+  </servlet-mapping>
 
   <servlet-mapping>
   	<servlet-name>GetTicketsServlet</servlet-name>

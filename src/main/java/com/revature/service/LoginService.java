@@ -13,10 +13,9 @@ public class LoginService {
 		String protectedPassword = String.valueOf(passwordToHash.hashCode());
 
 		if ((userInfo != null) && (protectedPassword.equals(userInfo.getPassword()))) {
-			System.out.println("User Exist");
+			System.out.println("User Exist and Correct Password");
 			return true;
 		} 
-		
 		
 		return false;
 		
