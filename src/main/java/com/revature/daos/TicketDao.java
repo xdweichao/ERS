@@ -64,4 +64,26 @@ public class TicketDao {
 			return null;
 		}
 	}
+
+
+
+	public static boolean updateTicket(int ticketId, int status, int resolver) {
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "\r\n" + 
+					"update ers_reimbursement set reimb_status_id = ?, reimb_resolver = ?, "
+					+ "reimb_resolved = current_date where reimb_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, status);
+			ps.setInt(2, resolver);
+			ps.setInt(3, ticketId);
+			ps.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+		
+	}
 }

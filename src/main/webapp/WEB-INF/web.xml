@@ -12,13 +12,13 @@
 	</servlet>
 	
 	<servlet>
-		<servlet-name>TicketServlet</servlet-name>
-		<servlet-class>com.revature.servlets.TicketServlet</servlet-class>
+		<servlet-name>GetTicketsServlet</servlet-name>
+		<servlet-class>com.revature.servlets.GetTicketsServlet</servlet-class>
 	</servlet>
 
 
   <servlet-mapping>
-  	<servlet-name>TicketServlet</servlet-name>
+  	<servlet-name>GetTicketsServlet</servlet-name>
   	<url-pattern>/ticket/</url-pattern>
   </servlet-mapping>
 

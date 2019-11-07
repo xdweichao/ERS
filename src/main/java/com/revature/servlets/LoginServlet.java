@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.daos.UserDao;
 import com.revature.models.Users;
+import com.revature.service.LoginService;
 
 public class LoginServlet extends HttpServlet {
 
@@ -49,18 +50,14 @@ public class LoginServlet extends HttpServlet {
 		String username = userSubmittedInformation.getUsername();
 		String passwordToHash = userSubmittedInformation.getPassword();
 
-		Users userInfo = UserDao.logIfExist(username, passwordToHash);
-
-		// hash password
-		String protectedPassword = String.valueOf(passwordToHash.hashCode());
-
 		// check if user exist
-		if ((userInfo != null) && (protectedPassword.equals(userInfo.getPassword()))) {
-			System.out.println("User is logged");
-			resp.setStatus(201); 
+		if (LoginService.authenticate(username, passwordToHash)) {
+			Users userInfo = UserDao.logIfExist(username, passwordToHash);
 			om.writeValue(resp.getWriter(), userInfo);
 		} else {
-			System.out.println("Username/Password is incorrect");
+			System.out.println("Invalid Login");
+			resp.setStatus(403);
+			resp.getWriter().write("403");
 		}
 	}
 

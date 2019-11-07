@@ -9,12 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.daos.TicketDao;
 import com.revature.models.Tickets;
 import com.revature.models.Users;
 import com.revature.service.TicketService;
 
 
-public class TicketServlet extends HttpServlet {
+public class DenyTicketsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	@Override
@@ -31,18 +32,19 @@ public class TicketServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Ticket test");
+		System.out.println("Deny Ticket test");
 
 		ObjectMapper om = new ObjectMapper();
 		Users user = om.readValue(request.getReader(), Users.class);
 		
 		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
 		tickets = TicketService.getTicketFromUseridSevice(user);
+		//TicketDao.updateTicket();
 		
 		response.setStatus(201); 
 		om.writeValue(response.getWriter(), tickets);
 
-		System.out.println("Ticket Test Done");
+		System.out.println("Ticket Set to Deny");
 	}
 
 }

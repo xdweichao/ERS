@@ -11,7 +11,6 @@ import java.util.List;
 import com.revature.models.Users;
 import com.revature.util.ConnectionUtil;
 
-
 public class UserDao {
 
 	public static Users logIfExist(String username, String password) {
@@ -27,7 +26,7 @@ public class UserDao {
 			Users user = extractUserInfo(resultSet);
 			return user;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null;
 		}
 	}
