@@ -10,7 +10,17 @@
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>com.revature.servlets.LoginServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>TicketServlet</servlet-name>
+		<servlet-class>com.revature.servlets.TicketServlet</servlet-class>
+	</servlet>
 
+
+  <servlet-mapping>
+  	<servlet-name>TicketServlet</servlet-name>
+  	<url-pattern>/ticket/</url-pattern>
+  </servlet-mapping>
 
   <servlet-mapping>
   	<servlet-name>LoginServlet</servlet-name>
