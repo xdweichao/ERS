@@ -47,6 +47,11 @@ auto fill ids from author and user id related fields from cookie
 
 
 
+
+
+
+----------------------------------
+
 NEW:
 
 // get login, after logged in, will create a session for UserID, and RoleID
@@ -90,7 +95,7 @@ PUT http://localhost:8080/ers/ticket/FinManActions
 "statusid":3
 }
 
-
+------------------------------------
 
 
 

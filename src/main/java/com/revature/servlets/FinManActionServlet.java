@@ -36,7 +36,11 @@ public class FinManActionServlet extends HttpServlet {
 		// CORS Headers, mentioned in class but unsure, when this will be used yet in
 		// our project
 		resp.setHeader("Access-Control-Allow-Origin", "*");
-		resp.setHeader("Access-Control-Allow-Headers", "content-type");
+		resp.setHeader("Access-Control-Allow-Credentials", "true");
+		resp.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+		resp.setHeader("Access-Control-Allow-Headers",
+				"Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+
 		super.service(req, resp);
 	}
 
