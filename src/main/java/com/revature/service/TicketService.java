@@ -24,6 +24,8 @@ public class TicketService {
 		
 		return ticket;
 	}
+
+	
 	
 	
 	public Tickets updateTicket(Tickets ticket) {
@@ -32,14 +34,20 @@ public class TicketService {
 		int ticketId = ticket.getTicketid();
 
 		ticket = TicketDao.updateTicket(ticketId, status, resolver);
-
 		return ticket;
 		
 	}
 	
-	public static ArrayList<Tickets> getTicketFromUseridSevice(Users userid){
+	public static ArrayList<Tickets> getTicketFromUseridSevice(int userid){
 		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
 		tickets = TicketDao.getAllTicketsFromUser(userid);
+		return tickets;
+	}
+
+
+	public static ArrayList<Tickets> getTicketFromAllUsersSevice(int userRoleID) {
+		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+		tickets = TicketDao.getAllTickets();
 		return tickets;
 	}
 

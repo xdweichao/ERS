@@ -36,11 +36,18 @@ toDo: [Wei]
 emp role logic on update ticket [ exclude auther != resolver ] [role id != 1]
 getAllTicketsAllUsers[byStats] (not just by userID)
 
-toDo
+toDo2
+
+Did:
+created cookie to hold userID
+combined create and select all from user into one one "EmpActionServlet"
+created "FinManActionServlet" -getAllTicketsAllUsers, -update ticket
+
+toNew:
+update ticket requiires session user input
 
 
-
-
+OLD:
 
 GET Login User
 http://localhost:8080/ers/login
@@ -50,7 +57,7 @@ requires username and password
 GET Tickets From Logged User 
 http://localhost:8080/ers/ticket/
 requires userID
-
+requires nothing, will use session/cookie to log
 
 POST (Creating) tickets to Database
 http://localhost:8080/ers/ticket/create
@@ -61,7 +68,37 @@ PUT (Updating Tickets from Database
 http://localhost:8080/ers/ticket/update
 require ticket id, status id, resolver id
 
+NEW:
 
+
+//view tics from user
+get http://localhost:8080/ers/ticket
+{
+"username":"RegEmpA",
+"password":"password
+}
+
+
+//create tick
+post http://localhost:8080/ers/ticket
+{
+"amount":200,
+"description":"TestFromServlet123412341234",
+"authorid":500,
+"typeid":3
+}
+
+//view ticks from all
+get http://localhost:8080/ers/ticket/FinManActions
+
+
+//updates tickets
+put http://localhost:8080/ers/ticket/FinManActions
+{
+"ticketid":1, 
+"statusid":2, 
+"resolverid":500
+}
 
 
 
@@ -73,3 +110,27 @@ require ticket id, status id, resolver id
 
 
 import HttpClient 
+
+
+
+
+<body>
+<%
+String message = null;
+String sessionID = null;
+Cookie[] cookies = request.getCookies();
+if(cookies != null){
+for(Cookie cookie : cookies){
+	if(cookie.getName().equals("message")) message = cookie.getValue();
+	if(cookie.getName().equals("JSESSIONID")) sessionID = cookie.getValue();
+}
+}
+%>
+<h3>Login Success</h3>
+<h4><%=message%></h4>
+<h4>Session ID = <%=sessionID %></h4>
+<br><br>
+<form action="LogoutServlet" method="post">
+<input type="submit" value="Logout" >
+</form>
+</body>

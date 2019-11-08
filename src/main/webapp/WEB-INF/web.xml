@@ -10,11 +10,7 @@
 		<servlet-name>LoginServlet</servlet-name>
 		<servlet-class>com.revature.servlets.LoginServlet</servlet-class>
 	</servlet>
-	
-	<servlet>
-		<servlet-name>GetTicketsServlet</servlet-name>
-		<servlet-class>com.revature.servlets.GetTicketsServlet</servlet-class>
-	</servlet>
+
 
 	<servlet>
 		<servlet-name>CreateTicketsServlet</servlet-name>
@@ -26,27 +22,48 @@
 		<servlet-class>com.revature.servlets.UpdateTicketsServlet</servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name>EmpActionServlet</servlet-name>
+		<servlet-class>com.revature.servlets.EmpActionServlet</servlet-class>
+	</servlet>
+	
+	
+		<servlet>
+		<servlet-name>FinManActionServlet</servlet-name>
+		<servlet-class>com.revature.servlets.FinManActionServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FinManActionServlet</servlet-name>
+		<url-pattern>/ticket/FinManActions</url-pattern>
+	</servlet-mapping>
+	
+
+	<servlet-mapping>
+		<servlet-name>EmpActionServlet</servlet-name>
+		<url-pattern>/ticket/EmpActions</url-pattern>
+	</servlet-mapping>
 
 
-  <servlet-mapping>
-  	<servlet-name>UpdateTicketsServlet</servlet-name>
-  	<url-pattern>/ticket/update</url-pattern>
-  </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FinManActionServlet</servlet-name>
+		<url-pattern>/ticket/FinManActions</url-pattern>
+	</servlet-mapping>
 
-  <servlet-mapping>
-  	<servlet-name>CreateTicketsServlet</servlet-name>
-  	<url-pattern>/ticket/create</url-pattern>
-  </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CreateTicketsServlet</servlet-name>
+		<url-pattern>/ticket/create</url-pattern>
+	</servlet-mapping>
 
-  <servlet-mapping>
-  	<servlet-name>GetTicketsServlet</servlet-name>
-  	<url-pattern>/ticket/</url-pattern>
-  </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EmpActionServlet</servlet-name>
+		<url-pattern>/ticket</url-pattern>
+	</servlet-mapping>
 
-  <servlet-mapping>
-  	<servlet-name>LoginServlet</servlet-name>
-  	<url-pattern>/login</url-pattern>
-  </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
 
 
 </web-app>
