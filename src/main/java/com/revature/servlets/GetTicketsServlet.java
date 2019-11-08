@@ -16,7 +16,7 @@ import com.revature.models.Users;
 import com.revature.service.TicketService;
 
 
-public class CreateTicketsServlet extends HttpServlet {
+public class GetTicketsServlet extends HttpServlet {
 
 	TicketService tic = new TicketService();
 	
@@ -33,24 +33,18 @@ public class CreateTicketsServlet extends HttpServlet {
 	}
 
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Create Ticket test");
-		Cookie userIDFromCookie[] = request.getCookies();
-		int userID = -1;
-		for (Cookie c : userIDFromCookie) {
-			if (c.getName().equals("UserIDCookie")) {
-				userID = Integer.parseInt(c.getValue());
-			}
-		}
+		System.out.println("Get Ticket by ID test");
+		
+		
 		ObjectMapper om = new ObjectMapper();
-		Tickets createTicketInfo = om.readValue(request.getReader(), Tickets.class);
+		Tickets getTicketInfo = om.readValue(request.getReader(), Tickets.class);
+		int ticketID= getTicketInfo.getTicketid();
+//		System.out.println(getTicketInfo);
+//		System.out.println(ticketID);
 		
-		System.out.println(createTicketInfo);
-		System.out.println(userID);
-		
-		createTicketInfo.setAuthorid(userID);
-		createTicketInfo = tic.createTickets(createTicketInfo);
+		Tickets TicketByIDInfo = TicketDao.getTicketById(ticketID);
 		
 		//ArrayList<Tickets> tickets = new ArrayList<Tickets>();
 		//System.out.println(createTicketInfo.getAmount());
@@ -58,10 +52,10 @@ public class CreateTicketsServlet extends HttpServlet {
 		
 		
 		response.setStatus(201); 
-		om.writeValue(response.getWriter(), createTicketInfo);
+		om.writeValue(response.getWriter(), TicketByIDInfo);
 
 
-		System.out.println("Creation Complete");
+		System.out.println("Get Ticket by ID Complete");
 	}
 
 }

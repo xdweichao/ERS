@@ -95,6 +95,13 @@ PUT http://localhost:8080/ers/ticket/FinManActions
 "statusid":3
 }
 
+
+//get ticket by id
+GET  http://localhost:8080/ers/ticket/get
+{
+"ticketid":  "3"
+}
+
 ------------------------------------
 
 

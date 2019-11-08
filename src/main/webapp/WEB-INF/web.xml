@@ -13,17 +13,17 @@
 
 
 	<servlet>
-		<servlet-name>CreateTicketsServlet</servlet-name>
-		<servlet-class>com.revature.servlets.CreateTicketsServlet</servlet-class>
+		<servlet-name>GetTicketsServlet</servlet-name>
+		<servlet-class>com.revature.servlets.GetTicketsServlet</servlet-class>
 	</servlet>
 
 	<servlet>
 		<servlet-name>EmpActionServlet</servlet-name>
 		<servlet-class>com.revature.servlets.EmpActionServlet</servlet-class>
 	</servlet>
-	
-	
-		<servlet>
+
+
+	<servlet>
 		<servlet-name>FinManActionServlet</servlet-name>
 		<servlet-class>com.revature.servlets.FinManActionServlet</servlet-class>
 	</servlet>
@@ -32,13 +32,14 @@
 		<servlet-name>FinManActionServlet</servlet-name>
 		<url-pattern>/ticket/FinManActions</url-pattern>
 	</servlet-mapping>
-	
 
 
-<!-- 	<servlet-mapping> -->
-<!-- 		<servlet-name>EmpActionServlet</servlet-name> -->
-<!-- 		<url-pattern>/ticket/create</url-pattern> -->
-<!-- 	</servlet-mapping> -->
+
+	<servlet-mapping>
+		<servlet-name>GetTicketsServlet</servlet-name>
+		<url-pattern>/ticket/get</url-pattern>
+	</servlet-mapping>
+
 
 	<servlet-mapping>
 		<servlet-name>EmpActionServlet</servlet-name>
