@@ -45,7 +45,7 @@ public class TicketService {
 	}
 
 
-	public static ArrayList<Tickets> getTicketFromAllUsersSevice(int userRoleID) {
+	public static ArrayList<Tickets> getTicketFromAllUsersSevice() {
 		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
 		tickets = TicketDao.getAllTickets();
 		return tickets;

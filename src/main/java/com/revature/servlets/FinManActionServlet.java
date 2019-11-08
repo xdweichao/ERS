@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.daos.TicketDao;
 import com.revature.models.Tickets;
 import com.revature.service.TicketService;
 
@@ -30,8 +31,17 @@ public class FinManActionServlet extends HttpServlet {
 		}
 	}
 
+	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		// CORS Headers, mentioned in class but unsure, when this will be used yet in
+		// our project
+		resp.setHeader("Access-Control-Allow-Origin", "*");
+		resp.setHeader("Access-Control-Allow-Headers", "content-type");
+		super.service(req, resp);
+	}
+
 	// get ticket from all user but check if roleid = 2
-	// create ticket 
+	// create ticket
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("Getting Ticket test");
@@ -53,11 +63,10 @@ public class FinManActionServlet extends HttpServlet {
 		// Users user = om.readValue(request.getReader(), Users.class);
 		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
 
-		tickets = TicketService.getTicketFromAllUsersSevice(userRoleID);
+		tickets = TicketService.getTicketFromAllUsersSevice();
 		System.out.println(tickets);
 		response.setStatus(201);
 		om.writeValue(response.getWriter(), tickets);
-
 		System.out.println("Ticket based on User ID Retrieved");
 	}
 
@@ -66,22 +75,57 @@ public class FinManActionServlet extends HttpServlet {
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("Update Ticket test");
+		// Get the user and role from session
+		Cookie userRoleIDFromCookie[] = request.getCookies();
+		int userRoleID = 1;
+		int userID = -1;
+		for (Cookie c : userRoleIDFromCookie) {
+			if (c.getName().equals("UserRoleIDCookie")) {
+				userRoleID = Integer.parseInt(c.getValue());
+			}
+			if (c.getName().equals("UserIDCookie")) {
+				userID = Integer.parseInt(c.getValue());
+			}
+		}
 
+		System.out.println("Role value is " + userRoleID);
+		System.out.println("User ID value is " + userID);
 		ObjectMapper om = new ObjectMapper();
 		Tickets updateTicketInfo = om.readValue(request.getReader(), Tickets.class);
 
-		updateTicketInfo = tic.updateTicket(updateTicketInfo);
-		
-		//ArrayList<Tickets> tickets = new ArrayList<Tickets>();
-		//System.out.println(updateTicketInfo.getAuthorid());
-		
-		
-		
-		response.setStatus(201); 
-		om.writeValue(response.getWriter(), updateTicketInfo);
+		if (userRoleID == 2) {
+			// display user and role id
+			System.out.println("Is Financial Manager, Beginning Update");
+
+			// get ticket from db and check if auther is resolver
+			Tickets ticketInfo = TicketDao.getTicketById(updateTicketInfo.getTicketid());
+			System.out.println("Author from Ticket: " + ticketInfo.getAuthorid());
+
+			if (ticketInfo.getAuthorid() != userID) {
+				updateTicketInfo.setResolverid(userID);
+				updateTicketInfo = tic.updateTicket(updateTicketInfo);
+
+				response.setStatus(201);
+
+				om.writeValue(response.getWriter(), updateTicketInfo);
+				System.out.println("Update Complete");
+			} else {
+				response.setStatus(403);
+				System.out.println("You can't approve/deny your own ticket!");
+
+			}
+		} else {
+
+			response.setStatus(403);
+			System.out.println("You're not an financial manager");
+			System.out.println("Update Failed to to Unauthorization");
+
+			om.writeValue(response.getWriter(), "Access Denied");
+		}
+		// ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+		// System.out.println(updateTicketInfo.getAuthorid());
 
 
-		System.out.println("Update Complete");
 	}
 
 }

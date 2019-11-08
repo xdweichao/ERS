@@ -54,36 +54,35 @@ public class LoginServlet extends HttpServlet {
 
 		// check if user exist
 		if (LoginService.authenticate(username, passwordToHash)) {
-			
-		     //get the old session and invalidate
-	        HttpSession oldSession = req.getSession(false);
-            if (oldSession != null) {
-                oldSession.invalidate();
-            }
-            
-            //generate a new session
-            HttpSession newSession = req.getSession(true);
 
-            //setting session lifespan to 5 mins
-            newSession.setMaxInactiveInterval(5*60);
-            
-            
+			// get the old session and invalidate
+			HttpSession oldSession = req.getSession(false);
+			if (oldSession != null) {
+				oldSession.invalidate();
+			}
+
+			// generate a new session
+			HttpSession newSession = req.getSession(true);
+
+			// setting session lifespan to 5 mins
+			newSession.setMaxInactiveInterval(5 * 60);
+
 			Users userInfo = UserDao.logIfExist(username, passwordToHash);
-			
-			//adds userID cookie
+
+			// adds userID cookie
 			Cookie UserIDCookie = new Cookie("UserIDCookie", String.valueOf(userInfo.getUserid()));
 			resp.addCookie(UserIDCookie);
-			
-			//adds User's Role ID
+
+			// adds User's Role ID
 			Cookie UserRoleIDCookie = new Cookie("UserRoleIDCookie", String.valueOf(userInfo.getRole()));
 			resp.addCookie(UserRoleIDCookie);
-			
+
 			resp.setStatus(201);
-			
+
 			om.writeValue(resp.getWriter(), userInfo);
-			//check cookie
-			//om.writeValue(resp.getWriter(), UserCookie);
-			
+			// check cookie
+			// om.writeValue(resp.getWriter(), UserCookie);
+
 		} else {
 			System.out.println("Invalid Login");
 			resp.setStatus(403);
@@ -98,8 +97,10 @@ public class LoginServlet extends HttpServlet {
 		random.nextBytes(salt);
 		return salt;
 	}
+
 	// create a consistent salt value
 	static byte[] salt = saltCode();
+
 	public static byte[] passwordHashNSalt(String passwordToProtect) {
 		try {
 			// configure the SHA-512 hash function with our salt

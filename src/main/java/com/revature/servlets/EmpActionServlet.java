@@ -29,9 +29,17 @@ public class EmpActionServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
+	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		// CORS Headers, mentioned in class but unsure, when this will be used yet in
+		// our project
+		resp.setHeader("Access-Control-Allow-Origin", "*");
+		resp.setHeader("Access-Control-Allow-Headers", "content-type");
+		super.service(req, resp);
+	}
 
 	// get ticket from userid (from cookie)
-	// create ticket 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("Getting Ticket test");
@@ -61,20 +69,30 @@ public class EmpActionServlet extends HttpServlet {
 		System.out.println("Ticket based on User ID Retrieved");
 	}
 
-	// create ticket from user
-
+	// create ticket with userid from cookie
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("Create Ticket test");
 
+		Cookie userIDFromCookie[] = request.getCookies();
+		int userID = -1;
+		for (Cookie c : userIDFromCookie) {
+			if (c.getName().equals("UserIDCookie")) {
+				userID = Integer.parseInt(c.getValue());
+			}
+		}
 		ObjectMapper om = new ObjectMapper();
 		Tickets createTicketInfo = om.readValue(request.getReader(), Tickets.class);
-
+		
+		System.out.println(createTicketInfo);
+		System.out.println(userID);
+		
+		createTicketInfo.setAuthorid(userID);
 		createTicketInfo = tic.createTickets(createTicketInfo);
-
-		// ArrayList<Tickets> tickets = new ArrayList<Tickets>();
-		// System.out.println(createTicketInfo.getAmount());
-
+		
+		//ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+		//System.out.println(createTicketInfo.getAmount());
+		
 		response.setStatus(201);
 		om.writeValue(response.getWriter(), createTicketInfo);
 

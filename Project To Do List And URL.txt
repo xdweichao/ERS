@@ -32,73 +32,68 @@ create tickets
 update tickets
 
 
-toDo: [Wei]
+toDo: [Wei] [Completed]
 emp role logic on update ticket [ exclude auther != resolver ] [role id != 1]
 getAllTicketsAllUsers[byStats] (not just by userID)
 
-toDo2
 
 Did:
 created cookie to hold userID
+GetAllTicketsfromAll Users
 combined create and select all from user into one one "EmpActionServlet"
 created "FinManActionServlet" -getAllTicketsAllUsers, -update ticket
-
-toNew:
-update ticket requiires session user input
-
-
-OLD:
-
-GET Login User
-http://localhost:8080/ers/login
-requires username and password
+FinMan cant approve their own ticket
+auto fill ids from author and user id related fields from cookie
 
 
-GET Tickets From Logged User 
-http://localhost:8080/ers/ticket/
-requires userID
-requires nothing, will use session/cookie to log
-
-POST (Creating) tickets to Database
-http://localhost:8080/ers/ticket/create
-requires amount, desc, autid, type
-
-
-PUT (Updating Tickets from Database
-http://localhost:8080/ers/ticket/update
-require ticket id, status id, resolver id
 
 NEW:
 
-
-//view tics from user
-get http://localhost:8080/ers/ticket
+// get login, after logged in, will create a session for UserID, and RoleID
+GET http://localhost:8080/ers/login
 {
 "username":"RegEmpA",
-"password":"password
+"password":"password"
 }
 
 
-//create tick
-post http://localhost:8080/ers/ticket
+//view tickets from user
+GET http://localhost:8080/ers/ticket/EmpActions
+{
+no inputs required
+}
+
+
+//create tickets from user, authorID will be autofilled from session cookie
+POST http://localhost:8080/ers/ticket/EmpActions
 {
 "amount":200,
 "description":"TestFromServlet123412341234",
-"authorid":500,
 "typeid":3
 }
 
-//view ticks from all
-get http://localhost:8080/ers/ticket/FinManActions
 
 
-//updates tickets
-put http://localhost:8080/ers/ticket/FinManActions
+//view ticket from all
+GET http://localhost:8080/ers/ticket/FinManActions
+{
+no need for data sent
+will pull tickets from where User 
+}
+
+
+//updates tickets, gets userid(for resolver) + and roleid
+//it'll validate if resolver isn't author and role is fin manager
+PUT http://localhost:8080/ers/ticket/FinManActions
 {
 "ticketid":1, 
-"statusid":2, 
-"resolverid":500
+"statusid":3
 }
+
+
+
+
+
 
 
 
@@ -109,9 +104,9 @@ put http://localhost:8080/ers/ticket/FinManActions
 //put update
 
 
+Angular Front End notes:
+
 import HttpClient 
-
-
 
 
 <body>
