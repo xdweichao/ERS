@@ -53,6 +53,7 @@ public class LoginServlet extends HttpServlet {
 		// check if user exist
 		if (LoginService.authenticate(username, passwordToHash)) {
 			Users userInfo = UserDao.logIfExist(username, passwordToHash);
+			resp.setStatus(201);
 			om.writeValue(resp.getWriter(), userInfo);
 		} else {
 			System.out.println("Invalid Login");

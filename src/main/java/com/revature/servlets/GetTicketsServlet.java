@@ -37,8 +37,9 @@ public class GetTicketsServlet extends HttpServlet {
 		Users user = om.readValue(request.getReader(), Users.class);
 		
 		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
-		tickets = TicketService.getTicketFromUseridSevice(user);
 		
+		tickets = TicketService.getTicketFromUseridSevice(user);
+		System.out.println(tickets);
 		response.setStatus(201); 
 		om.writeValue(response.getWriter(), tickets);
 
