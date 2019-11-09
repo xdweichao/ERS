@@ -58,4 +58,10 @@ public class GetTicketsServlet extends HttpServlet {
 		System.out.println("Get Ticket by ID Complete");
 	}
 
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(req, resp);
+	}
+
 }
