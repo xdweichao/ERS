@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.Tickets;
+import com.revature.models.Users;
 import com.revature.service.TicketService;
 
 public class EmpActionServlet extends HttpServlet {
@@ -49,13 +50,14 @@ public class EmpActionServlet extends HttpServlet {
 		System.out.println("Getting Ticket test");
 
 		// Get the userid from session
-		Cookie userIDFromCookie[] = request.getCookies();
-		int userID = -1;
-		for (Cookie c : userIDFromCookie) {
-			if (c.getName().equals("UserIDCookie")) {
-				userID = Integer.parseInt(c.getValue());
-			}
-		}
+	//	Cookie userIDFromCookie[] = request.getCookies();
+	//	Users userSubmittedInformation = om.readValue(request.getReader(), Users.class);
+		int userID = Integer.parseInt(request.getParameter("userid"));
+	//	for (Cookie c : userIDFromCookie) {
+		//	if (c.getName().equals("UserIDCookie")) {
+			//	userID = Integer.parseInt(c.getValue());
+		//	}
+	//	}
 
 		System.out.println("Cookie value is Userid " + userID);
 
