@@ -55,7 +55,8 @@ auto fill ids from author and user id related fields from cookie
 NEW:
 
 // get login, after logged in, will create a session for UserID, and RoleID
-GET http://localhost:8080/ers/login
+GET/POST < Both fine 
+http://localhost:8080/ers/login
 {
 "username":"RegEmpA",
 "password":"password"
