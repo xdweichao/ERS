@@ -79,17 +79,17 @@ public class EmpActionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("Create Ticket test");
-
-		Cookie userIDFromCookie[] = request.getCookies();
+		
+		/*Cookie userIDFromCookie[] = request.getCookies();
 		int userID = -1;
 		for (Cookie c : userIDFromCookie) {
 			if (c.getName().equals("UserIDCookie")) {
 				userID = Integer.parseInt(c.getValue());
 			}
-		}
+		}*/
 		ObjectMapper om = new ObjectMapper();
 		Tickets createTicketInfo = om.readValue(request.getReader(), Tickets.class);
-		
+		int userID = createTicketInfo.getAuthorid();
 		System.out.println(createTicketInfo);
 		System.out.println(userID);
 		

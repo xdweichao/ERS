@@ -49,15 +49,17 @@ public class FinManActionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("Getting Ticket test");
+		int userRoleID = Integer.parseInt(request.getParameter("role"));
+		//int userID = Integer.parseInt(request.getParameter("userid"));
 
 		// Get the userid from session
-		Cookie userRoleIDFromCookie[] = request.getCookies();
+		/*Cookie userRoleIDFromCookie[] = request.getCookies();
 		int userRoleID = 1;
 		for (Cookie c : userRoleIDFromCookie) {
 			if (c.getName().equals("UserRoleIDCookie")) {
 				userRoleID = Integer.parseInt(c.getValue());
 			}
-		}
+		}*/
 
 		System.out.println("Role value is " + userRoleID);
 
