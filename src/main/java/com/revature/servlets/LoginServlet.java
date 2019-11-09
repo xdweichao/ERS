@@ -94,6 +94,14 @@ public class LoginServlet extends HttpServlet {
 		}
 	}
 
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(req, resp);
+	}
+	
+	
 	// 50% Done Salting logic if we have time
 	public final static byte[] saltCode() {
 		SecureRandom random = new SecureRandom();
