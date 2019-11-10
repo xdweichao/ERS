@@ -24,6 +24,8 @@ public class UserDao {
 			ResultSet resultSet = statement.executeQuery();
 			resultSet.next();
 			Users user = extractUserInfo(resultSet);
+			//check password from database
+			//System.out.println("PasswordHash from Database" + user.getPassword());
 			return user;
 		} catch (SQLException e) {
 			//e.printStackTrace();
@@ -34,7 +36,7 @@ public class UserDao {
 	public static Users extractUserInfo(ResultSet resultSet) throws SQLException {
 		int id = resultSet.getInt("ers_users_id");
 		String username = resultSet.getString("ers_username");
-		String password = String.valueOf(resultSet.getString("ers_password").hashCode());
+		String password = resultSet.getString("ers_password");
 		// attempt salt
 		// String password =
 		// LoginServlet.passwordHashNSalt(resultSet.getString("ers_password")).toString();
