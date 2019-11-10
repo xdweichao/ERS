@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.daos.TicketDao;
+import com.revature.models.TicketCreator;
 import com.revature.models.Tickets;
 import com.revature.service.TicketService;
 
@@ -67,7 +68,7 @@ public class FinManActionServlet extends HttpServlet {
 		ObjectMapper om = new ObjectMapper();
 
 		// Users user = om.readValue(request.getReader(), Users.class);
-		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+		ArrayList<TicketCreator> tickets = new ArrayList<TicketCreator>();
 
 		tickets = TicketService.getTicketFromAllUsersSevice();
 		System.out.println(tickets);
@@ -97,7 +98,7 @@ public class FinManActionServlet extends HttpServlet {
 		System.out.println("Role value is " + userRoleID);
 		System.out.println("User ID value is " + userID);
 		ObjectMapper om = new ObjectMapper();
-		Tickets updateTicketInfo = om.readValue(request.getReader(), Tickets.class);
+		TicketCreator updateTicketInfo = om.readValue(request.getReader(), TicketCreator.class);
 
 		if (userRoleID == 2) {
 			// display user and role id
@@ -109,7 +110,7 @@ public class FinManActionServlet extends HttpServlet {
 
 			if (ticketInfo.getAuthorid() != userID) {
 				updateTicketInfo.setResolverid(userID);
-				updateTicketInfo = tic.updateTicket(updateTicketInfo);
+				Tickets ticket = tic.updateTicketCreator(updateTicketInfo);
 
 				response.setStatus(201);
 

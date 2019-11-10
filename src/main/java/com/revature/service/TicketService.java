@@ -3,6 +3,7 @@ package com.revature.service;
 import java.util.ArrayList;
 
 import com.revature.daos.TicketDao;
+import com.revature.models.TicketCreator;
 import com.revature.models.Tickets;
 import com.revature.models.Users;
 
@@ -38,15 +39,23 @@ public class TicketService {
 		
 	}
 	
-	public static ArrayList<Tickets> getTicketFromUseridSevice(int userid){
-		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+	public Tickets updateTicketCreator(TicketCreator ticket) {
+		int status = ticket.getStatusid();
+		int resolver = ticket.getResolverid();
+		int ticketId = ticket.getTicketid();
+
+		return TicketDao.updateTicket(ticketId, status, resolver);
+	}
+	
+	public static ArrayList<TicketCreator> getTicketFromUseridSevice(int userid){
+		ArrayList<TicketCreator> tickets = new ArrayList<TicketCreator>();
 		tickets = TicketDao.getAllTicketsFromUser(userid);
 		return tickets;
 	}
 
 
-	public static ArrayList<Tickets> getTicketFromAllUsersSevice() {
-		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+	public static ArrayList<TicketCreator> getTicketFromAllUsersSevice() {
+		ArrayList<TicketCreator> tickets = new ArrayList<TicketCreator>();
 		tickets = TicketDao.getAllTickets();
 		return tickets;
 	}
