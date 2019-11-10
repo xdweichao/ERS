@@ -34,7 +34,7 @@ public class EmpActionServlet extends HttpServlet {
 
 		// CORS Headers, mentioned in class but unsure, when this will be used yet in
 		// our project
-		resp.setHeader("Access-Control-Allow-Origin", "*");
+		resp.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
 		resp.setHeader("Access-Control-Allow-Credentials", "true");
 		resp.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
 		resp.setHeader("Access-Control-Allow-Headers",
