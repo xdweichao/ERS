@@ -82,17 +82,17 @@ public class FinManActionServlet extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("Update Ticket test");
 		// Get the user and role from session
-		Cookie userRoleIDFromCookie[] = request.getCookies();
-		int userRoleID = 1;
-		int userID = -1;
-		for (Cookie c : userRoleIDFromCookie) {
-			if (c.getName().equals("UserRoleIDCookie")) {
-				userRoleID = Integer.parseInt(c.getValue());
-			}
-			if (c.getName().equals("UserIDCookie")) {
-				userID = Integer.parseInt(c.getValue());
-			}
-		}
+		//Cookie userRoleIDFromCookie[] = request.getCookies();
+		int userRoleID = Integer.parseInt(request.getParameter("role"));
+		int userID = Integer.parseInt(request.getParameter("userid"));
+		//for (Cookie c : userRoleIDFromCookie) {
+			//if (c.getName().equals("UserRoleIDCookie")) {
+				//userRoleID = Integer.parseInt(c.getValue());
+			//}
+			//if (c.getName().equals("UserIDCookie")) {
+				//userID = Integer.parseInt(c.getValue());
+			//}
+		//}
 
 		System.out.println("Role value is " + userRoleID);
 		System.out.println("User ID value is " + userID);
