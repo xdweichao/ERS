@@ -18,7 +18,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.daos.UserDao;
 import com.revature.models.Users;
 import com.revature.service.LoginService;
-
+import org.apache.commons.codec.binary.Hex;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 public class LoginServlet extends HttpServlet {
 
 	// JDBC on init
@@ -48,16 +54,25 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
 		// read submitted JSON object and check if exist, attempt login
 		ObjectMapper om = new ObjectMapper();
 		Users userSubmittedInformation = om.readValue(req.getReader(), Users.class);
 
 		String username = userSubmittedInformation.getUsername();
-		String passwordToHash = userSubmittedInformation.getPassword();
-
+		String password = userSubmittedInformation.getPassword();
+		String salt = "1234";
+		int iterations = 100;
+		int keyLength = 512;
+		char[] passwordChars = password.toCharArray();
+		byte[] saltBytes = salt.getBytes();
+		
+		byte[] hashedBytes = hashPassword(passwordChars, saltBytes, iterations, keyLength);
+		String hashedPassword = Hex.encodeHexString(hashedBytes);
+		
+		//check inputed password after hashing
+		//System.out.println(hashedPassword);
 		// check if user exist
-		if (LoginService.authenticate(username, passwordToHash)) {
+		if (LoginService.authenticate(username, hashedPassword)) {
 
 			// get the old session and invalidate
 			HttpSession oldSession = req.getSession(false);
@@ -71,7 +86,7 @@ public class LoginServlet extends HttpServlet {
 			// setting session lifespan to 5 mins
 			newSession.setMaxInactiveInterval(5 * 60);
 
-			Users userInfo = UserDao.logIfExist(username, passwordToHash);
+			Users userInfo = UserDao.logIfExist(username, hashedPassword);
 
 			// adds userID cookie
 			Cookie UserIDCookie = new Cookie("UserIDCookie", String.valueOf(userInfo.getUserid()));
@@ -100,32 +115,18 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(req, resp);
 	}
-	
-	
-	// 50% Done Salting logic if we have time
-	public final static byte[] saltCode() {
-		SecureRandom random = new SecureRandom();
-		byte[] salt = new byte[64];
-		random.nextBytes(salt);
-		return salt;
-	}
 
-	// create a consistent salt value
-	static byte[] salt = saltCode();
 
-	public static byte[] passwordHashNSalt(String passwordToProtect) {
-		try {
-			// configure the SHA-512 hash function with our salt
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			md.update(salt);
-			// password hashed
-			md.update(passwordToProtect.getBytes(Charset.forName("UTF-8")));
-			byte[] hashedPassword = md.digest(passwordToProtect.getBytes(StandardCharsets.UTF_8));
-			return hashedPassword;
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+	    public static byte[] hashPassword( final char[] password, final byte[] salt, final int iterations, final int keyLength ) {
+
+	        try {
+	            SecretKeyFactory skf = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA512" );
+	            PBEKeySpec spec = new PBEKeySpec( password, salt, iterations, keyLength );
+	            SecretKey key = skf.generateSecret( spec );
+	            byte[] res = key.getEncoded( );
+	            return res;
+	        } catch ( NoSuchAlgorithmException | InvalidKeySpecException e ) {
+	            throw new RuntimeException( e );
+	        }
+	    }
 }

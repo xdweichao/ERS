@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.models.TicketCreator;
 import com.revature.models.Tickets;
+import com.revature.models.Users;
 import com.revature.service.TicketService;
 
 public class EmpActionServlet extends HttpServlet {
@@ -49,13 +51,14 @@ public class EmpActionServlet extends HttpServlet {
 		System.out.println("Getting Ticket test");
 
 		// Get the userid from session
-		Cookie userIDFromCookie[] = request.getCookies();
-		int userID = -1;
-		for (Cookie c : userIDFromCookie) {
-			if (c.getName().equals("UserIDCookie")) {
-				userID = Integer.parseInt(c.getValue());
-			}
-		}
+	//	Cookie userIDFromCookie[] = request.getCookies();
+	//	Users userSubmittedInformation = om.readValue(request.getReader(), Users.class);
+		int userID = Integer.parseInt(request.getParameter("userid"));
+	//	for (Cookie c : userIDFromCookie) {
+		//	if (c.getName().equals("UserIDCookie")) {
+			//	userID = Integer.parseInt(c.getValue());
+		//	}
+	//	}
 
 		System.out.println("Cookie value is Userid " + userID);
 
@@ -63,7 +66,7 @@ public class EmpActionServlet extends HttpServlet {
 		ObjectMapper om = new ObjectMapper();
 
 		// Users user = om.readValue(request.getReader(), Users.class);
-		ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+		ArrayList<TicketCreator> tickets = new ArrayList<TicketCreator>();
 
 		tickets = TicketService.getTicketFromUseridSevice(userID);
 		System.out.println(tickets);
@@ -77,17 +80,17 @@ public class EmpActionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("Create Ticket test");
-
-		Cookie userIDFromCookie[] = request.getCookies();
+		
+		/*Cookie userIDFromCookie[] = request.getCookies();
 		int userID = -1;
 		for (Cookie c : userIDFromCookie) {
 			if (c.getName().equals("UserIDCookie")) {
 				userID = Integer.parseInt(c.getValue());
 			}
-		}
+		}*/
 		ObjectMapper om = new ObjectMapper();
 		Tickets createTicketInfo = om.readValue(request.getReader(), Tickets.class);
-		
+		int userID = createTicketInfo.getAuthorid();
 		System.out.println(createTicketInfo);
 		System.out.println(userID);
 		

@@ -8,31 +8,73 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import com.revature.models.TicketCreator;
 import com.revature.models.Tickets;
 import com.revature.models.Users;
 import com.revature.util.ConnectionUtil;
 
 public class TicketDao {
 
-	private static Tickets extractTicket(ResultSet resultSet) throws SQLException {
+	private static TicketCreator extractTicket(ResultSet resultSet) throws SQLException {
 		int id = resultSet.getInt("reimb_id");
 		double amount = resultSet.getDouble("reimb_amount");
 		Timestamp datesubmitted = resultSet.getTimestamp("reimb_submitted");
 		Timestamp dateresolved = resultSet.getTimestamp("reimb_resolved");
 		String description = resultSet.getString("reimb_description");
 		String receipt = resultSet.getString("reimb_receipt");
-		int author = resultSet.getInt("reimb_author");
+		int authorId = resultSet.getInt("reimb_author");
+		
 		int resolver = resultSet.getInt("reimb_resolver");
 		int status = resultSet.getInt("reimb_status_id");
 		int type = resultSet.getInt("reimb_type_id");
-
-		Tickets ticket = new Tickets(id, amount, datesubmitted, dateresolved, description, receipt, author, resolver,
+        String author = getUserName(authorId);
+		TicketCreator ticket = new TicketCreator(id, amount, datesubmitted, dateresolved, description, receipt, author, resolver,
 				status, type);
 
 		return ticket;
 	}
+	
+	private static Tickets extractTickets(ResultSet resultSet) throws SQLException {
+		int id = resultSet.getInt("reimb_id");
+		double amount = resultSet.getDouble("reimb_amount");
+		Timestamp datesubmitted = resultSet.getTimestamp("reimb_submitted");
+		Timestamp dateresolved = resultSet.getTimestamp("reimb_resolved");
+		String description = resultSet.getString("reimb_description");
+		String receipt = resultSet.getString("reimb_receipt");
+		int authorId = resultSet.getInt("reimb_author");
+		
+		int resolver = resultSet.getInt("reimb_resolver");
+		int status = resultSet.getInt("reimb_status_id");
+		int type = resultSet.getInt("reimb_type_id");
+		Tickets ticket = new Tickets(id, amount, datesubmitted, dateresolved, description, receipt, authorId, resolver,
+				status, type);
 
-	public static ArrayList<Tickets> getAllTicketsFromUser(int userid) {
+		return ticket;
+	}
+	
+	
+	public static String getUserName(int userid) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM ers_users WHERE ers_users_id = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+
+			statement.setInt(1, userid);
+
+			ResultSet resultSet = statement.executeQuery();
+			String name = "";
+			if(resultSet.next()) {
+				name = resultSet.getString("user_first_name") + " " +
+						resultSet.getString("user_last_name");
+			}
+		
+			return name;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static ArrayList<TicketCreator> getAllTicketsFromUser(int userid) {
 		try (Connection connection = ConnectionUtil.getConnection()) {
 			String sql = "SELECT * FROM ers_reimbursement WHERE reimb_author = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -41,7 +83,7 @@ public class TicketDao {
 
 			ResultSet resultSet = statement.executeQuery();
 
-			ArrayList<Tickets> tickets = getTicketList(resultSet);
+			ArrayList<TicketCreator> tickets = getTicketList(resultSet);
 			return tickets;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -49,9 +91,9 @@ public class TicketDao {
 		}
 	}
 
-	private static ArrayList<Tickets> getTicketList(ResultSet resultset) {
+	private static ArrayList<TicketCreator> getTicketList(ResultSet resultset) {
 		try {
-			ArrayList<Tickets> tickets = new ArrayList<Tickets>();
+			ArrayList<TicketCreator> tickets = new ArrayList<TicketCreator>();
 			while (resultset.next()) {
 				tickets.add(extractTicket(resultset));
 			}
@@ -69,8 +111,7 @@ public class TicketDao {
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 			if (resultSet.next()) {
-
-				return extractTicket(resultSet);
+				return extractTickets(resultSet);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -78,7 +119,6 @@ public class TicketDao {
 		}
 		return null;
 	}
-
 	public static Tickets createTicket(Double amount, String description, int author, int reimbType) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			String sql = "insert into ers_reimbursement(reimb_amount, reimb_submitted, reimb_description, reimb_author, reimb_status_id, reimb_type_id) \r\n"
@@ -126,14 +166,14 @@ public class TicketDao {
 
 	}
 
-	public static ArrayList<Tickets> getAllTickets() {
+	public static ArrayList<TicketCreator> getAllTickets() {
 		try (Connection connection = ConnectionUtil.getConnection()) {
 			String sql = "SELECT * FROM ers_reimbursement";
 			PreparedStatement statement = connection.prepareStatement(sql);
 
 			ResultSet resultSet = statement.executeQuery();
 
-			ArrayList<Tickets> tickets = getTicketList(resultSet);
+			ArrayList<TicketCreator> tickets = getTicketList(resultSet);
 			return tickets;
 		} catch (SQLException e) {
 			e.printStackTrace();
